@@ -1,0 +1,4 @@
+anomabot-env/
+static/
+.git/
+__pycache__/
