@@ -1,15 +1,16 @@
 # anomabot.py: Core module for Anomabot
 # by James Davidson
 
-# Required libraries and modules
+
 import discord
 
 import modules.utilities as utilities
 import modules.nato as nato
-import modules.anagram as anagram
+import modules.vigenere as vigenere
 import modules.unsw as unsw
 
 
+# Create a Discord client instance for the bot
 anomabot = discord.Client()
 
 
@@ -38,7 +39,9 @@ async def on_message(msg):
     # NATO encoding/decoding
     if msg.content.startswith("^nato"):
         reply = nato.process(args)
-        await msg.channel.send(reply)
+    
+    # Send back a response
+    await msg.channel.send(reply)
 
 
 # Prime the bot for start up
