@@ -23,3 +23,10 @@ Return a current timestamp string in the form [HH:MM:SS].
 """
 def get_timestamp() -> str:
     return f"[{datetime.datetime.now().strftime('%H:%M:%S')}]"
+
+
+"""
+Stop the bot script, shutting down the bot.
+"""
+def stop_bot():
+    os._exit(1)

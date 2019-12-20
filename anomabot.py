@@ -9,9 +9,6 @@ import modules.nato as nato
 import modules.vigenere as vigenere
 import modules.unsw as unsw
 
-# import sys
-import os
-
 # Create a Discord client instance for the bot
 anomabot = discord.ext.commands.Bot(command_prefix='^')
 
@@ -39,8 +36,7 @@ async def _stop(ctx):
         await ctx.channel.send(":no_entry: You're not my master!")
     else:
         await ctx.channel.send("Shutting down, bye for now!")
-        print(f"{utilities.get_timestamp()} {anomabot.user} going offline.")
-        os._exit(1)
+        utilities.stop_bot()
     
 
 # Command for the NATO module
