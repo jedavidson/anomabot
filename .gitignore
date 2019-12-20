@@ -2,3 +2,4 @@ anomabot-env/
 static/
 .git/
 __pycache__/
+snippets.py

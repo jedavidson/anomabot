@@ -15,21 +15,24 @@ nato_alph = {
     "6": "Six", "7": "Seven", "8": "Eight", "9": "Nine", " ": "(space)"
 }
 
-# Return a value's key in the above alphabet, if it exists.
-#
-# Parameters:
-# -> v: value
+"""
+Return a value's key in the above alphabet, if it exists.
+
+Parameters:
+- v: value
+"""
 def fetch_key(v: str) -> str:
     if v not in nato_alph.values():
         return v
     return list(nato_alph.keys())[list(nato_alph.values()).index(v)]
 
+"""
+Return as a string the NATO alphabet encoding of the given message.
+Any message characters not in the above alphabet are stripped.
 
-# Return as a string the NATO alphabet encoding of the given message.
-# Any message characters not in the above alphabet are stripped.
-#
-# Parameters:
-# -> msg: the message to encode
+Parameters:
+- msg: the message to encode
+"""
 def encode(msg: str) -> str:
     encoded_msg = []
     for c in msg:
@@ -42,31 +45,15 @@ def encode(msg: str) -> str:
     return ' '.join(encoded_msg)
 
 
-# Return as a string the translation of a given NATO message.
-# Any message characters not in the above alphabet are stripped.
-#
-# Parameters:
-# -> msg: the message to decode
+"""
+Return as a string the translation of a given NATO message.
+Any message characters not in the above alphabet are stripped.
+
+Parameters:
+- msg: the message to decode 
+"""
 def decode(msg: str) -> str:
     decoded_msg = []
     for word in msg.split():
         decoded_msg.append(fetch_key(word))
-    return ''.join(decoded_msg)
-
-
-# Process the input directly from the Discord message, and return the
-# appropriate response string from either encode() or decode().
-# A pre-prepared help string is returned if the leading argument is invalid.
-#
-# Parameters:
-# -> msg: raw content of the Discord message, with prefix/command trimmed
-def process(msg: str) -> str:
-    if msg.startswith("encode"):
-        msg = re.sub(r'^encode\s+', '', msg, re.IGNORECASE)
-        reply = encode(msg)
-    elif msg.startswith("decode"):
-        msg = re.sub(r'^decode\s+', '', msg, re.IGNORECASE)
-        reply = decode(msg)
-    else:
-        reply = "Usage: `^nato [encode | decode] [message]`"
-    return reply       
+    return ''.join(decoded_msg) 
