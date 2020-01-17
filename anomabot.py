@@ -22,7 +22,7 @@ async def on_ready():
     print(f"{utilities.get_timestamp()} {anomabot.user} is online!")
 
     # Set presence
-    await anomabot.change_presence(activity = discord.Game(name = "^help"))
+    await anomabot.change_presence(activity = discord.Game(name="^help"))
 
 
 # Delegate messages to the appropriate command/module
@@ -58,9 +58,14 @@ async def _nato(ctx, *args):
 # Command for the Vigenere module
 @anomabot.command(name="vigenere", help="Encipher with a Vigenere cipher")
 async def _vigenere(ctx, *args):
-    await ctx.channel.send(":no_entry: This feature is not ready!")
-    # if not args or len(args) < 3:
-    #     await ctx.channel.send(anomabot.bot_settings["warnings"]["vigenere"])
+    if not args or len(args) < 3 or args[0] not in "kpc":
+        await ctx.channel.send(anomabot.bot_settings["warnings"]["vigenere"])
+    elif args[0] == 'c':
+        await ctx.channel.send(
+            ":warning: Ciphertext feedback is not currently supported.")
+    else:
+        await ctx.channel.send(
+            vigenere.encipher(args[0], args[1], ' '.join(args[2:])))
 
 
 # Command for the LeetCode module
