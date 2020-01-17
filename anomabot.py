@@ -8,9 +8,11 @@ import modules.utilities as utilities
 import modules.nato as nato
 import modules.vigenere as vigenere
 import modules.unsw as unsw
+import modules.leetcode as leetcode
 
-# Create a Discord client instance for the bot
+# Create a Discord client instance for the bot, and load its settings
 anomabot = discord.ext.commands.Bot(command_prefix='^')
+anomabot.bot_settings = utilities.get_bot_data()
 
 
 # Initialisation tasks for the bot to perform on start up
@@ -26,26 +28,27 @@ async def on_ready():
 # Delegate messages to the appropriate command/module
 @anomabot.event
 async def on_message(msg):
-    await anomabot.process_commands(msg)
+    if unsw.contains_wam(msg.content.lower()):
+        await unsw.add_wam_reactions(msg)
+    else:
+        await anomabot.process_commands(msg)
 
 
 # Stop bot with a Discord message - bot creator only
 @anomabot.command(name="stop", hidden=True)
 async def _stop(ctx):
     if not ctx.message.author.id == anomabot.bot_settings["bot_master"]:
-        await ctx.channel.send(":no_entry: You're not my master!")
+        await ctx.channel.send(anomabot.bot_settings["warnings"]["stop"])
     else:
         await ctx.channel.send("Shutting down, bye for now!")
         utilities.stop_bot()
-    
+
 
 # Command for the NATO module
 @anomabot.command(name="nato", help="Encode/decode NATO alphabet messages")
 async def _nato(ctx, *args):
     if not args or len(args) < 2:
-        await ctx.channel.send(
-            ":warning: Usage: `^nato [encode | decode] [message]`"
-        )
+        await ctx.channel.send(anomabot.bot_settings["warnings"]["nato"])
     elif args[0] == "encode":
         await ctx.channel.send(nato.encode(' '.join(args[1:])))
     elif args[0] == "decode":
@@ -55,9 +58,17 @@ async def _nato(ctx, *args):
 # Command for the Vigenere module
 @anomabot.command(name="vigenere", help="Encipher with a Vigenere cipher")
 async def _vigenere(ctx, *args):
-    await ctx.channel.send(":no_entry: This command is not ready yet!")
+    await ctx.channel.send(":no_entry: This feature is not ready!")
+    # if not args or len(args) < 3:
+    #     await ctx.channel.send(anomabot.bot_settings["warnings"]["vigenere"])
 
 
-# Prime the bot for start up
-anomabot.bot_settings = utilities.get_bot_data()
+# Command for the LeetCode module
+@anomabot.command(name="leetcode", help="Get a random LeetCode problem")
+async def _leetcode(ctx):
+    await ctx.channel.send("Fetching a LeetCode problem for you...")
+    await ctx.channel.send(leetcode.get_random_problem())
+
+
+# Run the bot
 anomabot.run(anomabot.bot_settings["bot_token"])
