@@ -6,10 +6,14 @@ import os
 import datetime
 
 
-"""
-Load and return the bot's data object from its JSON file.
-"""
+######################
+# Main functionality #
+######################
+
+
 def get_bot_data() -> dict:
+    ''' Loads and returns the bot's data object from its JSON file. '''
+
     try:
         with open('static/anomabot_data.json', 'r') as f:
             return json.load(f)
@@ -18,15 +22,13 @@ def get_bot_data() -> dict:
         os._exit(1)
 
 
-"""
-Return a current timestamp string in the form [HH:MM:SS].
-"""
 def get_timestamp() -> str:
+    ''' Returns a current timestamp string in the form [HH:MM:SS]. '''
+
     return f"[{datetime.datetime.now().strftime('%H:%M:%S')}]"
 
 
-"""
-Stop the bot script, shutting down the bot.
-"""
 def stop_bot():
+    ''' Stops the bot script, shutting down the bot. '''
+
     os._exit(1)
