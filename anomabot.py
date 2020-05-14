@@ -14,7 +14,7 @@ import modules.emojify as emojify
 # Create a Discord client instance for the bot, and load its settings
 anomabot = discord.ext.commands.Bot(command_prefix='^')
 anomabot.bot_settings = utilities.get_bot_data()
-
+settings = anomabot.bot_settings
 
 # General
 
@@ -46,14 +46,14 @@ async def _stop(ctx):
         a warning is sent to the channel and the bot will remain active.
     '''
 
-    if ctx.message.author.id != anomabot.bot_settings['bot_master']:
-        await ctx.channel.send(anomabot.bot_settings['warnings']['stop'])
+    if ctx.message.author.id != settings['bot_master']:
+        await ctx.channel.send(settings['warnings']['stop'])
     else:
         await ctx.channel.send('Shutting down, bye for now!')
         utilities.stop_bot()
 
 
-@anomabot.command(name='nato', help='Encode/decode NATO alphabet messages')
+@anomabot.command(name='nato', help=settings['help_texts']['nato'])
 async def _nato(ctx, *args):
     ''' Encodes or decodes a string using the NATO phonetic alphabet.
 
@@ -62,14 +62,14 @@ async def _nato(ctx, *args):
     '''
 
     if not args or len(args) < 2:
-        await ctx.channel.send(anomabot.bot_settings['warnings']['nato'])
+        await ctx.channel.send(settings['warnings']['nato'])
     elif args[0] == 'encode':
         await ctx.channel.send(nato.encode(' '.join(args[1:])))
     elif args[0] == 'decode':
         await ctx.channel.send(nato.decode(' '.join(args[1:])))
 
 
-@anomabot.command(name='vigenere', help='Encipher with a Vigenere cipher')
+@anomabot.command(name='vigenere', help=settings['help_texts']['vigenere'])
 async def _vigenere(ctx, *args):
     ''' Encodes or decodes a text using the Vigenere cipher.
 
@@ -78,7 +78,7 @@ async def _vigenere(ctx, *args):
     '''
 
     if not args or len(args) < 3 or args[0] not in 'kpc':
-        await ctx.channel.send(anomabot.bot_settings['warnings']['vigenere'])
+        await ctx.channel.send(settings['warnings']['vigenere'])
     elif args[0] == 'c':
         await ctx.channel.send(':warning: Ciphertext feedback is not currently supported.')
     else:
@@ -86,7 +86,7 @@ async def _vigenere(ctx, *args):
             vigenere.encipher(args[0], args[1], ' '.join(args[2:])))
 
 
-@anomabot.command(name='leetcode', help='Get a random LeetCode problem')
+@anomabot.command(name='leetcode', help=settings['help_texts']['leetcode'])
 async def _leetcode(ctx):
     ''' Gets a link to a random LeetCode problem. '''
 
@@ -95,7 +95,7 @@ async def _leetcode(ctx):
 
 
 # Command for the Emojify module
-@anomabot.command(name='emojify', help='Turn a message into alphanumeric emojis')
+@anomabot.command(name='emojify', help=settings['help_texts']['emojify'])
 async def _emojify(ctx, *args):
     ''' Turns a message into its emoji equivalent.
 
@@ -104,7 +104,7 @@ async def _emojify(ctx, *args):
     '''
 
     if not args:
-        await ctx.channel.send(anomabot.bot_settings['warnings"]["emojify'])
+        await ctx.channel.send(settings['warnings']['emojify'])
     else:
         await ctx.channel.send(emojify.emojify_msg(''.join(args)))
 
