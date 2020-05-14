@@ -85,7 +85,7 @@ async def _vigenere(ctx, *args):
     if not args or len(args) < 3 or args[0] not in 'kpc':
         await ctx.channel.send(settings['warnings']['vigenere'])
     elif args[0] == 'c':
-        await ctx.channel.send(':warning: Ciphertext feedback is not currently supported.')
+        await ctx.channel.send(settings['warnings']['incomplete'])
     else:
         await ctx.channel.send(
             vigenere.encipher(args[0], args[1], ' '.join(args[2:])))
