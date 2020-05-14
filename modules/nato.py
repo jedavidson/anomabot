@@ -21,10 +21,8 @@ NATO_ALPH = {
 ####################
 
 
-def fetch_key(val: str) -> str:
-    '''
-    Return a value's key in the above alphabet, if it exists.
-    '''
+def _fetch_key(val: str) -> str:
+    ''' Returns a value's key in the above alphabet, if it exists. '''
 
     if val not in NATO_ALPH.values():
         return val
@@ -37,11 +35,11 @@ def fetch_key(val: str) -> str:
 ######################
 
 
-'''
-Return as a string the NATO alphabet encoding of the given message.
-Any message characters not in the above alphabet are stripped.
-'''
 def encode(msg: str) -> str:
+    ''' Returns as a string the NATO alphabet encoding of the given message.
+        Any message characters not in the above alphabet are stripped.
+    '''
+
     encoded_msg = []
 
     for ch in msg:
@@ -53,14 +51,14 @@ def encode(msg: str) -> str:
     return ' '.join(encoded_msg)
 
 
-'''
-Return as a string the translation of a given NATO message.
-Any message characters not in the above alphabet are stripped.
-'''
 def decode(msg: str) -> str:
+    ''' Returns as a string the translation of a given NATO message.
+        Any message characters not in the above alphabet are stripped.
+    '''
+
     decoded_msg = []
 
     for word in msg.split():
-        decoded_msg.append(fetch_key(word))
+        decoded_msg.append(_fetch_key(word))
 
     return ''.join(decoded_msg)
