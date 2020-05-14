@@ -87,8 +87,8 @@ async def _vigenere(ctx, *args):
     elif args[0] == 'c':
         await ctx.channel.send(settings['warnings']['incomplete'])
     else:
-        await ctx.channel.send(
-            vigenere.encipher(args[0], args[1], ' '.join(args[2:])))
+        await ctx.channel.send(vigenere.encipher(args[0], args[1],
+                                                 ' '.join(args[2:])))
 
 
 @anomabot.command(name='leetcode', help=settings['help_texts']['leetcode'])
