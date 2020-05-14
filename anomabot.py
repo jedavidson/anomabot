@@ -16,7 +16,10 @@ anomabot = discord.ext.commands.Bot(command_prefix='^')
 anomabot.bot_settings = utilities.get_bot_data()
 settings = anomabot.bot_settings
 
-# General
+
+###########
+# General #
+###########
 
 
 @anomabot.event
@@ -35,7 +38,9 @@ async def on_message(msg):
     await anomabot.process_commands(msg)
 
 
-# Command handlers
+####################
+# Command handlers #
+####################
 
 
 @anomabot.command(name='stop', hidden=True)
@@ -109,5 +114,10 @@ async def _emojify(ctx, *args):
         await ctx.channel.send(emojify.emojify_msg(''.join(args)))
 
 
-# Run the bot
-anomabot.run(anomabot.bot_settings['bot_token'])
+###########################
+# Entry point for the bot #
+###########################
+
+
+if __name__ == '__main__':
+    anomabot.run(anomabot.bot_settings['bot_token'])
