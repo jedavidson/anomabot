@@ -16,14 +16,25 @@ NATO_ALPH = {
 }
 
 
-'''
-Return a value's key in the above alphabet, if it exists.
-'''
+####################
+# Helper functions #
+####################
+
+
 def fetch_key(val: str) -> str:
+    '''
+    Return a value's key in the above alphabet, if it exists.
+    '''
+
     if val not in NATO_ALPH.values():
         return val
 
     return list(NATO_ALPH.keys())[list(NATO_ALPH.values()).index(val)]
+
+
+######################
+# Main functionality #
+######################
 
 
 '''
@@ -52,4 +63,4 @@ def decode(msg: str) -> str:
     for word in msg.split():
         decoded_msg.append(fetch_key(word))
 
-    return ''.join(decoded_msg) 
+    return ''.join(decoded_msg)
