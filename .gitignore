@@ -1,5 +1,7 @@
+.gitignore
 anomabot-env/
 static/
 .git/
 __pycache__/
+deprecated/
 snippets.py
