@@ -57,6 +57,7 @@ def encipher(method: str, keyword: str, plaintext: str) -> str:
             # TODO: fix ciphertext feedback
             # elif method == 'c':
             # 	...
+
             ciphertext += _encipher_char(ch, cipher_key)
             alpha_count += 1
         else:
