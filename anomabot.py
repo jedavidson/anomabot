@@ -120,4 +120,4 @@ async def _emojify(ctx, *args):
 
 
 if __name__ == '__main__':
-    anomabot.run(anomabot.bot_settings['bot_token'])
+    anomabot.run(settings['bot_token'])
