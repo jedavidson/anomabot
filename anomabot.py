@@ -9,71 +9,105 @@ import modules.nato as nato
 import modules.vigenere as vigenere
 import modules.unsw as unsw
 import modules.leetcode as leetcode
+import modules.emojify as emojify
 
 # Create a Discord client instance for the bot, and load its settings
 anomabot = discord.ext.commands.Bot(command_prefix='^')
 anomabot.bot_settings = utilities.get_bot_data()
 
 
-# Initialisation tasks for the bot to perform on start up
+# General
+
+
 @anomabot.event
 async def on_ready():
-    # Write some content to console
-    print(f"{utilities.get_timestamp()} {anomabot.user} is online!")
+    ''' Performs some initialisation tasks on start up. '''
 
-    # Set presence
-    await anomabot.change_presence(activity = discord.Game(name="^help"))
+    print(f'{utilities.get_timestamp()} {anomabot.user} is online!')
+
+    await anomabot.change_presence(activity=discord.Game(name='^help'))
 
 
-# Delegate messages to the appropriate command/module
 @anomabot.event
 async def on_message(msg):
-    if unsw.contains_wam(msg.content.lower()):
-        await unsw.add_wam_reactions(msg)
-    else:
-        await anomabot.process_commands(msg)
+    ''' Delegates messages to the appropriate command/module. '''
+
+    await anomabot.process_commands(msg)
 
 
-# Stop bot with a Discord message - bot creator only
-@anomabot.command(name="stop", hidden=True)
+# Command handlers
+
+
+@anomabot.command(name='stop', hidden=True)
 async def _stop(ctx):
-    if not ctx.message.author.id == anomabot.bot_settings["bot_master"]:
-        await ctx.channel.send(anomabot.bot_settings["warnings"]["stop"])
+    ''' Stops the bot when ^stop or any other aliases are detected.
+
+        If the user who issues the command is not the 'bot master' (i.e. me),
+        a warning is sent to the channel and the bot will remain active.
+    '''
+
+    if ctx.message.author.id != anomabot.bot_settings['bot_master']:
+        await ctx.channel.send(anomabot.bot_settings['warnings']['stop'])
     else:
-        await ctx.channel.send("Shutting down, bye for now!")
+        await ctx.channel.send('Shutting down, bye for now!')
         utilities.stop_bot()
 
 
-# Command for the NATO module
-@anomabot.command(name="nato", help="Encode/decode NATO alphabet messages")
+@anomabot.command(name='nato', help='Encode/decode NATO alphabet messages')
 async def _nato(ctx, *args):
+    ''' Encodes or decodes a string using the NATO phonetic alphabet.
+
+        If a string is not supplied, the bot sends a warning message
+        to the channel the message was sent in.
+    '''
+
     if not args or len(args) < 2:
-        await ctx.channel.send(anomabot.bot_settings["warnings"]["nato"])
-    elif args[0] == "encode":
+        await ctx.channel.send(anomabot.bot_settings['warnings']['nato'])
+    elif args[0] == 'encode':
         await ctx.channel.send(nato.encode(' '.join(args[1:])))
-    elif args[0] == "decode":
+    elif args[0] == 'decode':
         await ctx.channel.send(nato.decode(' '.join(args[1:])))
 
 
-# Command for the Vigenere module
-@anomabot.command(name="vigenere", help="Encipher with a Vigenere cipher")
+@anomabot.command(name='vigenere', help='Encipher with a Vigenere cipher')
 async def _vigenere(ctx, *args):
-    if not args or len(args) < 3 or args[0] not in "kpc":
-        await ctx.channel.send(anomabot.bot_settings["warnings"]["vigenere"])
+    ''' Encodes or decodes a text using the Vigenere cipher.
+
+        If a string and encoding method is not supplied, the bot sends a
+        warning message to the channel the message was sent in.
+    '''
+
+    if not args or len(args) < 3 or args[0] not in 'kpc':
+        await ctx.channel.send(anomabot.bot_settings['warnings']['vigenere'])
     elif args[0] == 'c':
-        await ctx.channel.send(
-            ":warning: Ciphertext feedback is not currently supported.")
+        await ctx.channel.send(':warning: Ciphertext feedback is not currently supported.')
     else:
         await ctx.channel.send(
             vigenere.encipher(args[0], args[1], ' '.join(args[2:])))
 
 
-# Command for the LeetCode module
-@anomabot.command(name="leetcode", help="Get a random LeetCode problem")
+@anomabot.command(name='leetcode', help='Get a random LeetCode problem')
 async def _leetcode(ctx):
-    await ctx.channel.send("Fetching a LeetCode problem for you...")
+    ''' Gets a link to a random LeetCode problem. '''
+
+    await ctx.channel.send('Fetching a LeetCode problem for you...')
     await ctx.channel.send(leetcode.get_random_problem())
 
 
+# Command for the Emojify module
+@anomabot.command(name='emojify', help='Turn a message into alphanumeric emojis')
+async def _emojify(ctx, *args):
+    ''' Turns a message into its emoji equivalent.
+
+        If a string and encoding method is not supplied, the bot sends a
+        warning message to the channel the message was sent in.
+    '''
+
+    if not args:
+        await ctx.channel.send(anomabot.bot_settings['warnings"]["emojify'])
+    else:
+        await ctx.channel.send(emojify.emojify_msg(''.join(args)))
+
+
 # Run the bot
-anomabot.run(anomabot.bot_settings["bot_token"])
+anomabot.run(anomabot.bot_settings['bot_token'])
