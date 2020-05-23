@@ -19,9 +19,7 @@ def _encipher_char(ch: str, cipher_key: str) -> str:
     if shifted_ch > ord('z'):
         shifted_ch -= 26
 
-    shifted_ch = chr(shifted_ch)
-
-    return shifted_ch.upper() if ch.isupper() else shifted_ch
+    return chr(shifted_ch).upper()
 
 
 ######################
