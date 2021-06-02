@@ -9,6 +9,6 @@ idna==2.8
 multidict==4.7.1
 requests==2.22.0
 soupsieve==1.9.5
-urllib3==1.25.8
+urllib3==1.26.5
 websockets==6.0
 yarl==1.4.2
