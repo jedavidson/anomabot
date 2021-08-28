@@ -1,8 +1,3 @@
-# nato.py: Encode/decode a message in the NATO phonetic alphabet
-# by James Davidson
-
-import re
-
 NATO_ALPH = {
     'a': 'Alfa', 'b': 'Bravo', 'c': 'Charlie', 'd': 'Delta',
     'e': 'Echo', 'f': 'Foxtrot', 'g': 'Golf', 'h': 'Hotel',
@@ -16,32 +11,20 @@ NATO_ALPH = {
 }
 
 
-####################
-# Helper functions #
-####################
-
-
 def _fetch_key(val: str) -> str:
     ''' Returns a value's key in the above alphabet, if it exists. '''
-
     if val not in NATO_ALPH.values():
         return val
 
     return list(NATO_ALPH.keys())[list(NATO_ALPH.values()).index(val)]
 
 
-######################
-# Main functionality #
-######################
-
-
 def encode(msg: str) -> str:
-    ''' Returns as a string the NATO alphabet encoding of the given message.
-        Any message characters not in the above alphabet are stripped.
     '''
-
+    Returns as a string the NATO alphabet encoding of the given message.
+    Any message characters not in the above alphabet are stripped.
+    '''
     encoded_msg = []
-
     for ch in msg:
         if not ch.isspace() and not ch.isalnum():
             encoded_msg.append(ch)
@@ -52,12 +35,11 @@ def encode(msg: str) -> str:
 
 
 def decode(msg: str) -> str:
-    ''' Returns as a string the translation of a given NATO message.
-        Any message characters not in the above alphabet are stripped.
     '''
-
+    Returns as a string the translation of a given NATO message.
+    Any message characters not in the above alphabet are stripped.
+    '''
     decoded_msg = []
-
     for word in msg.split():
         decoded_msg.append(_fetch_key(word))
 
